@@ -29,4 +29,11 @@ def index():
 
 @app.route("/register", methods=["GET", "POST"])
 def register():
+    gymName = request.form.get("gymName")
+    ownerName = request.form.get("gymName")
+    emailAddress = request.form.get("emailAddress")
+    password = request.form.get("password")
+    repeatPassword = request.form.get("repeatPassword")
+
+    app.logger.info(gymName)
     return render_template("register.html")
