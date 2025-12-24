@@ -88,19 +88,31 @@ section {
 .gap-1 { gap: 10px; }
 .gap-2 { gap: 20px; }
 
-/*
-Source - https://stackoverflow.com/a/1892815
-Posted by Mottie, modified by community. See post 'Timeline' for change history
-Retrieved 2025-12-21, License - CC BY-SA 3.0
-*/
+.image-frame {
+    /* 1. Center the image inside */
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
-.container img:not('.logo') {
-   width: 100%;
-   height: 100%;
-   object-fit: cover;
-   display: block;   
-   border-radius: 14px;
-   border-bottom: 5px solid var(--primary-red);
+    /* 2. The Shape & Border */
+    border-radius: 14px;
+    border-bottom: 5px solid var(--primary-red);
+    overflow: hidden; /* Crucial: crops the image to the rounded corners */
+
+    /* 3. Optional: Background while loading */
+    background-color: #f0f0f0;
+    
+    /* 4. Layout dimensions (adjust as needed) */
+    width: 100%; 
+    height: 100%; /* Or set a specific height like 300px */
+}
+
+/* Ensure the image fills the frame properly */
+.image-frame img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Prevents stretching/squishing */
+    display: block;
 }
 
 /* =========================================

@@ -20,6 +20,9 @@
                 
                 <div class="nav-links" style="display: flex;">
                     <span style="font-size: 0.9rem; color: #777; margin-right: 10px;">Already have an account?</span>
+
+                    <!-- Must create login.html -->
+
                     <a href="login.html" style="font-weight: 600; color: var(--primary-red);">Log In</a>
                 </div>
             </div>
@@ -33,52 +36,40 @@
                 <div style="text-align: center; margin-bottom: 30px;">
                     <h2>Manage your gym and track your athletes today.</h2>
                 </div>
-                <form action="submit" method="POST">
+                <form action="/register" method="post">
 
                     <!-- GYM NAME -->
 
                     <div class="form-group">
                         <label for="gymName" class="form-label">Gym Name</label>
-                        <input name="gymName" autocomplete="off" autofocus type="text" id="gymName" class="form-control" placeholder="e.g. Iron Titan Fitness">
-                    </div>
-
-                    <!-- OWNERS NAME -->
-
-                    <div class="form-group">
-                        <label for="fullName" class="form-label">Owner Full Name</label>
-                        <input name="ownerName" autocomplete="off" type="text" id="fullName" class="form-control" placeholder="John Doe">
+                        <input required name="gymName" autocomplete="off" autofocus type="text" id="gymName" class="form-control" placeholder="e.g. Iron Titan Fitness">
                     </div>
 
                     <!-- EMAIL ADDRESS -->
 
                     <div class="form-group">
                         <label for="email" class="form-label">Email Address</label>
-                        <input name="emailAdress" autocomplete="off" type="email" id="email" class="form-control" placeholder="john@example.com">
+                        <input required name="emailAddress" autocomplete="off" type="email" id="email" class="form-control" placeholder="john@example.com">
                     </div>
 
                     <!-- PASSWORD -->
 
                     <div class="form-group">
                         <label for="password" class="form-label">Password</label>
-                        <input name="password" autocomplete="off" type="password" id="password" class="form-control" placeholder="Min. 8 characters">
+                        <input required name="password" autocomplete="off" type="password" id="password" class="form-control" placeholder="Min. 8 characters">
                     </div>
 
                     <!-- REPEAT PASSWORD -->
 
                     <div class="form-group">
                         <label for="password" class="form-label">Repeat Password</label>
-                        <input name="repeatPassword" autocomplete="off" type="password" id="password" class="form-control" placeholder="Passwords must match">
+                        <input required name="repeatPassword" autocomplete="off" type="password" id="password" class="form-control" placeholder="Passwords must match">
                     </div>
 
                     <!-- SUBMIT BUTTON -->
 
                     <button type="submit" class="btn btn-primary btn-block" style="margin-top: 20px;">
                         Create Account
-                    </button>
-
-                    <p style="text-align: center; font-size: 0.8rem; margin-top: 20px; color: #999;">
-                        By creating an account, you agree to our <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>.
-                    </p>
                 </form>
             </div>
 
