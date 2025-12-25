@@ -3,7 +3,7 @@ import sqlite3
 
 def createDB():
     connection = sqlite3.connect("gyms.db")
-    connection.execute("PRAGMA foreign_keys = ON")
+    connection.execute("PRAGMA foreign_keys = ON") # Foreign keys are turned off in sqlite3 by default.
     cursor = connection.cursor() # Cursor object
 
     """ CREATE GYMS TABLE """
@@ -13,7 +13,7 @@ def createDB():
                 "gym_Name TEXT NOT NULL," \
                 "gym_Email TEXT UNIQUE NOT NULL CHECK (gym_Email LIKE '%@%.%')," \
                 "password_Hash VARCHAR(255) NOT NULL );" # VARCHAR is used for password hashes because of
-                                                        # the variable lenghts of the hashes and for future-proofing 
+                                                        # the variable lenghts of the hashes and for future-proofing .
 
                                                         # SQLite ignores this type because it doesn't have a limit for strings.
                                                         # It doesn't throw an error for compatibility with other DB software.
@@ -43,9 +43,10 @@ def createDB():
                 )
     connection.commit()
 
-    cursor.close()
+    cursor.close() # Connection isn't closed in this function for future usage in 'app.py'.
 
 # Credits to CS50x finance pset for the apology function.
+# TODO: Implement this function when there is an error.
 def apology(message, code=400):
     """Render message as an apology to user."""
 

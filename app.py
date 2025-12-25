@@ -19,8 +19,8 @@ app.config['SESSION_TYPE'] = "cachelib"
 app.config['SESSION_PERMANENT'] = True
 SESSION_CACHELIB = FileSystemCache(
     cache_dir="./sessions",
-    threshold=500,              # A maximum of cached sessions
-    default_timeout=10          # Amount of seconds a session will last
+    threshold=500,              # A maximum of cached sessions.
+    default_timeout=10          # Amount of seconds a session will last.
     )
 app.config.from_object(__name__)
 
@@ -28,8 +28,8 @@ Session(app)
 
 """ DB CREATION """
 
-connection = sqlite3.connect("gyms.db") # Connection
-createDB() # Creates a DB with 'gyms', 'members' and 'routines' tables
+connection = sqlite3.connect("gyms.db") # Connection.
+createDB()                              # Creates a DB with 'gyms', 'members' and 'routines' tables.
 
 @app.route("/")
 def index():
@@ -37,38 +37,50 @@ def index():
 
 @app.route("/register", methods=["GET", "POST"])
 def register():
+
     if request.method == "POST":
         gymName = request.form.get("gymName")
         emailAddress = request.form.get("emailAddress")
         password = request.form.get("password")
         repeatPassword = request.form.get("repeatPassword")
 
-        #TODO: not a good check. would need some JS first, and in case 
-        # the HTML is edited a python safety check (apology function would work) ->
+        # Check if all the data was input.
 
         if not gymName or not emailAddress or not password or not repeatPassword:
             return "PLEASE FILL ALL FIELDS"
         
+        # Check if passwords match.
+
         if password != repeatPassword:
             return "PASSWORDS MUST MATCH"
         
+        # Check if password is the right length.
+
         if len(password) < 8:
             return "PASSWORD MUST BE AT LEAST 8 CHARACTERS LONG"
 
-        # Hashing and salting password
+        # Hashing and salting password.
 
-        hashedPassword = generate_password_hash(password, method="scrypt", salt_length=32)
+        hashedPassword = generate_password_hash(
+                            password, method="scrypt", salt_length=32
+                            )
         
         """ INSERT NEW USER TO DB """
 
         connection = sqlite3.connect("gyms.db")
         cursor = connection.cursor()
 
-        cursor.execute("INSERT INTO gyms (gym_Name, gym_Email, password_Hash) VALUES (?, ?, ?);", (gymName, emailAddress, hashedPassword))
+        cursor.execute("INSERT INTO " \
+                       "gyms " \
+                       "(gym_Name, gym_Email, password_Hash) " \
+                       "VALUES (?, ?, ?);", 
+                       (gymName, emailAddress, hashedPassword)
+                       )
         
         connection.commit()
-        connection.close()
+        connection.close() # TODO: Check where to close the connection.
 
         return redirect("/login")
     else:
         return render_template("register.html")
+    
