@@ -3,7 +3,7 @@ from flask_session import Session
 from cachelib.file import FileSystemCache
 import sqlite3
 from werkzeug.security import check_password_hash, generate_password_hash
-from helpers import apology
+from helpers import apology, createDB
 
 app = Flask(__name__)
 
@@ -29,22 +29,7 @@ Session(app)
 """ DB CREATION """
 
 connection = sqlite3.connect("gyms.db") # Connection
-
-cursor = connection.cursor() # Cursor object
-
-
-cursor.execute("CREATE TABLE IF NOT EXISTS gyms (" \
-            "id INTEGER PRIMARY KEY AUTOINCREMENT," \
-            "gymName TEXT NOT NULL," \
-            "gymEmail TEXT UNIQUE NOT NULL CHECK (gymEmail LIKE '%@%.%')," \
-            "passwordHash VARCHAR(255) NOT NULL );" # VARCHAR is used for password hashes because of
-                                                    # the variable lenghts of the hashes and for future-proofing 
-
-                                                    # SQLite ignores this type because it doesn't have a limit for strings.
-                                                    # It doesn't throw an error for compatibility with other DB software.
-            )
-connection.commit()
-cursor.close()
+createDB() # Creates a DB with 'gyms', 'members' and 'routines' tables
 
 @app.route("/")
 def index():
@@ -66,6 +51,9 @@ def register():
         
         if password != repeatPassword:
             return "PASSWORDS MUST MATCH"
+        
+        if len(password) < 8:
+            return "PASSWORD MUST BE AT LEAST 8 CHARACTERS LONG"
 
         # Hashing and salting password
 
@@ -76,7 +64,7 @@ def register():
         connection = sqlite3.connect("gyms.db")
         cursor = connection.cursor()
 
-        cursor.execute("INSERT INTO gyms (gymName, gymEmail, passwordHash) VALUES (?, ?, ?);", (gymName, emailAddress, hashedPassword))
+        cursor.execute("INSERT INTO gyms (gym_Name, gym_Email, password_Hash) VALUES (?, ?, ?);", (gymName, emailAddress, hashedPassword))
         
         connection.commit()
         connection.close()
