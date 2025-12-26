@@ -2,6 +2,9 @@ from flask import render_template
 import sqlite3
 
 def createDB():
+
+    """ Initializes the DB """
+
     connection = sqlite3.connect("gyms.db")
     connection.execute("PRAGMA foreign_keys = ON") # Foreign keys are turned off in sqlite3 by default.
     cursor = connection.cursor() # Cursor object
@@ -44,6 +47,21 @@ def createDB():
     connection.commit()
 
     cursor.close() # Connection isn't closed in this function for future usage in 'app.py'.
+
+def dict_factory(cursor, row):
+
+    """ Turns the result of a query into a dict """
+
+    result = {}
+
+    for index, column in enumerate(cursor.description): # cursor.description returns a list of tuples with the first element being name of the column.
+                                                        # enumerate(cursor.description) returns something like:
+                                                        # (index, nameOfColumn) -- nameOfColumn is actually a tuple list, but in SQLite it only returns the name of the column, the others being 'None'.
+
+        result[column[0]] = row[index]                  # column[0] is the name of the column. row[index] is the value of the row.
+                                                        # Example: result["email_Address"] = "email@example.com"
+
+    return result
 
 # Credits to CS50x finance pset for the apology function.
 # TODO: Implement this function when there is an error.
