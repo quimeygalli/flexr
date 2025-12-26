@@ -3,7 +3,7 @@ from flask_session import Session
 from cachelib.file import FileSystemCache
 import sqlite3
 from werkzeug.security import check_password_hash, generate_password_hash
-from helpers import apology, createDB
+from helpers import apology, createDB, dict_factory
 
 app = Flask(__name__)
 
@@ -102,14 +102,19 @@ def login():
                 )
         
         connection = sqlite3.connect("gyms.db")
+        connection.row_factory = dict_factory
+
         cursor = connection.cursor()
 
         cursor.execute(query, (gym_Email,)) # Must pass variables as a tuple, even if there is just a single one
 
-        result = cursor.fetchone() 
+        row = cursor.fetchone() 
         
-        if result[0]["gym_Email"] and check_password_hash(result[0]["password_Hash"]): # TODO; Fix checking of user
-            session["user_id"] = result[0]["gym_id"]
+        if row is None:
+            return "INVALID EMAIL OR PASSWORD"
+        
+        session["user_id"] = row["gym_id"]
+        return redirect("/") # TODO; Create the homepage
 
 
     return render_template("login.html")
