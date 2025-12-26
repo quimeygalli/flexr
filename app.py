@@ -30,6 +30,7 @@ Session(app)
 
 connection = sqlite3.connect("gyms.db") # Connection.
 createDB()                              # Creates a DB with 'gyms', 'members' and 'routines' tables.
+connection.close()
 
 @app.route("/")
 def index():
@@ -84,3 +85,31 @@ def register():
     else:
         return render_template("register.html")
     
+
+@app.route("/login", methods=["GET", "POST"])
+def login():
+    if request.method == "POST":
+
+        gym_Email = request.form.get("emailAddress")
+        password = request.form.get("password")
+
+        if not gym_Email or not password:
+            return "PLEASE FILL ALL FIELDS"
+        
+        query = ("SELECT * " \
+                "FROM gyms " \
+                "WHERE gym_Email = ?" # Will return the row with all the gym data
+                )
+        
+        connection = sqlite3.connect("gyms.db")
+        cursor = connection.cursor()
+
+        cursor.execute(query, (gym_Email,)) # Must pass variables as a tuple, even if there is just a single one
+
+        result = cursor.fetchone() 
+        
+        if result[0]["gym_Email"] and check_password_hash(result[0]["password_Hash"]): # TODO; Fix checking of user
+            session["user_id"] = result[0]["gym_id"]
+
+
+    return render_template("login.html")
