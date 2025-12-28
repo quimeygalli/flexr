@@ -122,6 +122,8 @@ def login():
         cursor.execute(query, (gym_email,)) # Must pass variables as a tuple, even if there is just a single one
 
         row = cursor.fetchone() 
+
+        connection.close()
         
         if row is None or not check_password_hash(
             row["password_hash"], password
@@ -130,7 +132,7 @@ def login():
         
         
         session["user_id"] = row["gym_id"]
-        return redirect("/homepage") # TODO; Create the homepage
+        return redirect("/homepage")
 
 
     return render_template("login.html")
@@ -138,4 +140,19 @@ def login():
 
 @app.route("/homepage")
 def homepage():
-    return render_template("homepage.html")
+
+    connection = sqlite3.connect("gyms.db")
+    connection.row_factory = dict_factory
+
+    cursor = connection.cursor()
+
+    query = ("SELECT * "
+            "FROM members;")
+
+    cursor.execute(query)
+
+    members = cursor.fetchall() 
+
+    # TODO; Add logic for dates and status.
+
+    return render_template("homepage.html", members=members)

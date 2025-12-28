@@ -49,11 +49,11 @@
                 {% for member in members %}
                     <a href="#" class="member-item">
                         <div class="member-info">
-                            <span class="member-name">{{ member_name }}</span>
+                            <span class="member-name">{{ member["name"] }}</span>
                             <span class="member-detail">Last visit: {{ last_visit }}</span>
                         </div>
                         <div style="text-align: right;">
-                            <span class="badge badge-success">{{ member_status }}</span>
+                            <span class="badge badge-success">{{ member["status"] }}</span>
                         </div>
                     </a>
                 {% endfor %}
