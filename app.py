@@ -40,14 +40,14 @@ def index():
 def register():
 
     if request.method == "POST":
-        gymName = request.form.get("gymName")
-        emailAddress = request.form.get("emailAddress")
+        gym_name = request.form.get("gym_name")
+        email_address = request.form.get("email_address")
         password = request.form.get("password")
-        repeatPassword = request.form.get("repeatPassword")
+        repeat_password = request.form.get("repeat_password")
 
         # Check if all the data was input.
 
-        if not gymName or not emailAddress or not password or not repeatPassword:
+        if not gym_name or not email_address or not password or not repeat_password:
             return "PLEASE FILL ALL FIELDS"
         
         connection = sqlite3.connect("gyms.db")
@@ -57,7 +57,7 @@ def register():
 
         cursor.execute("SELECT * " \
                         "FROM gyms " \
-                        "WHERE gym_Email IS ?", (emailAddress,))
+                        "WHERE gym_email IS ?", (email_address,))
 
         row = cursor.fetchone()
 
@@ -68,7 +68,7 @@ def register():
         
         # Check if passwords match.
 
-        if password != repeatPassword:
+        if password != repeat_password:
             return "PASSWORDS MUST MATCH"
         
         # Check if password is the right length.
@@ -78,7 +78,7 @@ def register():
 
         # Hashing and salting password.
 
-        hashedPassword = generate_password_hash(
+        hashed_password = generate_password_hash(
                             password, method="scrypt", salt_length=32
                             )
         
@@ -86,9 +86,9 @@ def register():
 
         cursor.execute("INSERT INTO " \
                        "gyms " \
-                       "(gym_Name, gym_Email, password_Hash) " \
+                       "(gym_Name, gym_email, password_hash) " \
                        "VALUES (?, ?, ?);", 
-                       (gymName, emailAddress, hashedPassword)
+                       (gym_name, email_address, hashed_password)
                        )
         
         connection.commit()
@@ -103,15 +103,15 @@ def register():
 def login():
     if request.method == "POST":
 
-        gym_Email = request.form.get("emailAddress")
+        gym_email = request.form.get("email_address")
         password = request.form.get("password")
 
-        if not gym_Email or not password:
+        if not gym_email or not password:
             return "PLEASE FILL ALL FIELDS"
         
         query = ("SELECT * " \
                 "FROM gyms " \
-                "WHERE gym_Email = ?" # Will return the row with all the gym data
+                "WHERE gym_email = ?" # Will return the row with all the gym data
                 )
         
         connection = sqlite3.connect("gyms.db")
@@ -119,12 +119,12 @@ def login():
 
         cursor = connection.cursor()
 
-        cursor.execute(query, (gym_Email,)) # Must pass variables as a tuple, even if there is just a single one
+        cursor.execute(query, (gym_email,)) # Must pass variables as a tuple, even if there is just a single one
 
         row = cursor.fetchone() 
         
         if row is None or not check_password_hash(
-            row["password_Hash"], password
+            row["password_hash"], password
         ):
             return "INVALID EMAIL OR PASSWORD"
         
@@ -134,3 +134,8 @@ def login():
 
 
     return render_template("login.html")
+
+
+@app.route("/homepage")
+def homepage():
+    return render_template("homepage.html")

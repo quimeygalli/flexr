@@ -1,0 +1,67 @@
+{% extends "layout.html" %}
+
+{% block title %}Homepage{% endblock %}
+
+{% block main %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - IronHub</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="bg-light">
+
+    <header>
+        <div class="container">
+            <div class="nav-container">
+                <div class="logo">
+                    <img src="/static/FlexR_Logo.png" style="width:40%; height:40%">
+                </div>
+                
+                <div class="nav-links">
+                    <a href="#" style="font-weight: 700; color: var(--primary-red);">Members</a>
+                    <a href="#">Routines</a>
+                    <a href="#">Financials</a>
+                    <div style="width: 1px; height: 20px; background: #ddd; margin: 0 10px;"></div> <a href="/" style="font-size: 0.9rem;">Log Out</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <section style="padding: 50px 0;">
+        <div class="container">
+            
+            <div class="page-header">
+                <div>
+                    <h2>Gym Members</h2>
+                    <p style="margin-bottom: 0;">Manage access and track athlete progress.</p>
+                </div>
+                <a href="#" class="btn btn-primary">
+                    + Add New Member
+                </a>
+            </div>
+
+            <div style="margin-bottom: 20px;">
+                <input type="text" class="form-control" placeholder="Search members by name..." style="max-width: 400px;">
+            </div>
+            <div class="member-list">
+
+                {% for member in members %}
+                    <a href="#" class="member-item">
+                        <div class="member-info">
+                            <span class="member-name">{{ member_name }}</span>
+                            <span class="member-detail">Last visit: {{ last_visit }}</span>
+                        </div>
+                        <div style="text-align: right;">
+                            <span class="badge badge-success">{{ member_status }}</span>
+                        </div>
+                    </a>
+                {% endfor %}
+
+            </div>
+        </div>
+    </section>
+
+</body>
+</html>
+{% endblock %}

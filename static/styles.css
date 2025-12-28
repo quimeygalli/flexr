@@ -375,3 +375,82 @@ footer {
     color: var(--text-light);
     margin-top: 5px;
 }
+
+/* =========================================
+   10. DASHBOARD & LIST STYLES
+   ========================================= */
+
+/* Header layout for Dashboard pages (Title left, Button right) */
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+/* The Clickable Member Row */
+.member-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: white;
+    padding: 20px;
+    border-radius: var(--radius);
+    border: 1px solid var(--border-color);
+    margin-bottom: 15px;
+    transition: all 0.2s ease;
+    cursor: pointer;
+    text-decoration: none !important; /* Force no underline */
+    color: var(--text-dark); /* Force dark text */
+}
+
+/* Hover effect: slight lift and red border on left */
+.member-item:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+    border-left: 5px solid var(--primary-red);
+}
+
+/* Flex container for the text info inside the row */
+.member-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.member-name {
+    font-weight: 700;
+    font-size: 1.1rem;
+    margin-bottom: 4px;
+}
+
+.member-detail {
+    font-size: 0.9rem;
+    color: var(--text-light);
+}
+
+/* Status Badges */
+.badge {
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.badge-success {
+    background-color: #e8f5e9;
+    color: #2e7d32;
+}
+
+.badge-warning {
+    background-color: #fff3e0;
+    color: #ef6c00;
+}
+
+.badge-danger {
+    background-color: #ffebee;
+    color: #c62828;
+}

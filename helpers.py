@@ -13,9 +13,9 @@ def createDB():
 
     cursor.execute("CREATE TABLE IF NOT EXISTS gyms (" \
                 "gym_id INTEGER PRIMARY KEY AUTOINCREMENT," \
-                "gym_Name TEXT NOT NULL," \
-                "gym_Email TEXT UNIQUE NOT NULL CHECK (gym_Email LIKE '%@%.%')," \
-                "password_Hash VARCHAR(255) NOT NULL );" # VARCHAR is used for password hashes because of
+                "gym_name TEXT NOT NULL," \
+                "gym_email TEXT UNIQUE NOT NULL CHECK (gym_email LIKE '%@%.%')," \
+                "password_hash VARCHAR(255) NOT NULL );" # VARCHAR is used for password hashes because of
                                                         # the variable lenghts of the hashes and for future-proofing .
 
                                                         # SQLite ignores this type because it doesn't have a limit for strings.
@@ -28,6 +28,8 @@ def createDB():
                 "member_id INTEGER PRIMARY KEY AUTOINCREMENT, " \
                 "name TEXT NOT NULL, " \
                 "gym_id INTEGER NOT NULL, " \
+                "joined_date INTEGER NOT NULL, " \
+                "end_date INTEGER NOT NULL, " \
                 "FOREIGN KEY (gym_id) REFERENCES gyms (gym_id));"
                 )
     
