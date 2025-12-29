@@ -168,12 +168,28 @@ def homepage():
 
     return render_template("homepage.html", members=members)
 
-# @app.route("/new_member", methods=["GET", "POST"])
-# def new_member():
+@app.route("/new_member", methods=["GET", "POST"])
+def new_member():
 
-#     if request.method == "POST": 
-#         id = request.form.get("id")
-#         name = request.form.get("first_name") + " " + request.form.get("last_name")
-#         gym_id =
+    if request.method == "POST": 
+        id = request.form.get("id")
+        name = request.form.get("first_name") + " " + request.form.get("last_name")
 
-#     return render_template("new_member.html")
+        connection =sqlite3.connect("gyms.db")
+        connection.row_factory = dict_factory
+
+        cursor = connection.cursor()
+
+        query = "SELECT gym_id " \
+                "FROM gyms" \
+                "WHERE gym_id = ?"
+
+        cursor.execute(query, (session["gym_id"],))
+
+        gym_id = cursor.fetchone()
+
+        # TODO; Add member to DB. Should find a way to get the time and store it too.
+
+        print(gym_id)
+
+    return render_template("new_member.html")
