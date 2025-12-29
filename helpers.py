@@ -25,7 +25,7 @@ def createDB():
     """ CREATE MEMBERS TABLE """
 
     cursor.execute("CREATE TABLE IF NOT EXISTS members (" \
-                "member_id INTEGER PRIMARY KEY AUTOINCREMENT, " \
+                "member_id INTEGER PRIMARY KEY, " \
                 "name TEXT NOT NULL, " \
                 "gym_id INTEGER NOT NULL, " \
                 "joined_date INTEGER NOT NULL, " \

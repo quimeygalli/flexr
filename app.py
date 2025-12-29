@@ -156,3 +156,7 @@ def homepage():
     # TODO; Add logic for dates and status.
 
     return render_template("homepage.html", members=members)
+
+@app.route("/new_member", methods=["GET", "POST"])
+def new_member():
+    return render_template("new_member.html")
