@@ -29,6 +29,8 @@ Session(app)
 
 """ DB creation """
 
+# Could change to another DB in the future but there's no need to get complicated right now.
+
 connection = sqlite3.connect("gyms.db") # Connection.
 createDB()                              # Creates a DB with 'gyms', 'members' and 'routines' tables.
 connection.close()
@@ -247,3 +249,29 @@ def new_member():
         return redirect("homepage")
 
     return render_template("new_member.html")
+
+@app.route("/reception", methods=["GET", "POST"])
+def reception():
+
+    """ Get a member's ID and determine if it's a registered user """
+
+    if request.method == "POST":
+
+        member_id = request.form.get("member_id")
+
+        query = "SELECT * " \
+                "FROM members " \
+                "WHERE member_id = ?;"
+        
+        connection = sqlite3.connect("gyms.db")
+        connection.row_factory = dict_factory
+
+        cursor = connection.cursor()
+
+        cursor.execute(query, (member_id,))
+
+        row = cursor.fetchone()
+
+        if row["member"]: # Should use JS here, not Python.
+
+    return render_template("reception.html")

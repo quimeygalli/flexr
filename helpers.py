@@ -24,6 +24,8 @@ def createDB():
 
     """ CREATE MEMBERS TABLE """
 
+    # 'member_id' is the member's national ID number.
+
     cursor.execute("CREATE TABLE IF NOT EXISTS members (" \
                 "member_id INTEGER PRIMARY KEY, " \
                 "name TEXT NOT NULL, " \

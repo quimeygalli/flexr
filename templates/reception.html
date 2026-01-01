@@ -1,0 +1,106 @@
+{% extends "layout.html" %}
+
+{% block title %}Reception{% endblock %}
+
+{% block main %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <link rel="icon" type="image/svg+xml" href="logo.svg">
+</head>
+<body class="bg-light" style="display: flex; flex-direction: column; min-height: 100vh;">
+
+    <header style="padding: 20px 0; background: transparent; box-shadow: none;">
+    </header>
+
+    <section style="padding: 20px; flex: 1; display: flex; align-items: center; justify-content: center;">
+        
+        <div class="kiosk-card">
+            <h2 style="text-align: center; margin-bottom: 10px;">Member Check-In</h2>
+            <p style="text-align: center; margin-bottom: 30px; color: #777;">Please enter your ID number</p>
+            
+            <form id="checkin-form" onsubmit="handleCheckIn(event)" autocomplete="off">
+                <input 
+                    name="member_id123456789"
+                    type="number" 
+                    id="member-id-input" 
+                    class="kiosk-input" 
+                    placeholder="..." 
+                    autofocus
+                    required
+                >
+            </form>
+
+            <div id="status-message" class="access-result"></div>
+            
+            <p style="text-align: center; font-size: 0.85rem; color: #aaa; margin-top: 20px;">
+                Press <strong>Enter</strong> to submit
+            </p>
+        </div>
+
+    </section>
+
+    <script>
+        const inputField = document.getElementById('member-id-input');
+        const statusDiv = document.getElementById('status-message');
+
+        // 1. Force Focus: Ensure input is always ready for typing
+        document.addEventListener('click', function() {
+            inputField.focus();
+        });
+        
+        // Also focus on load
+        window.onload = function() {
+            inputField.focus();
+        };
+
+        // 2. Handle the Form Submit (Enter Key)
+        function handleCheckIn(event) {
+            event.preventDefault(); // Stop page reload
+            
+            const enteredId = inputField.value;
+            if(!enteredId) return;
+
+            // Clear previous UI state
+            resetStatus();
+
+            // SIMULATION LOGIC:
+            // "0000" = REJECTED, anything else = ACCEPTED
+            if (enteredId === "0000") {
+                showResult(false, "Membership Expired");
+            } else {
+                showResult(true, "Welcome, Athlete!");
+            }
+
+            // Clear input for the next person
+            inputField.value = "";
+        }
+
+        function resetStatus() {
+            statusDiv.className = 'access-result'; 
+            statusDiv.style.display = 'none';
+        }
+
+        function showResult(isAllowed, message) {
+            statusDiv.style.display = 'block';
+            statusDiv.innerText = message;
+
+            if (isAllowed) {
+                statusDiv.classList.add('result-accepted');
+            } else {
+                statusDiv.classList.add('result-rejected');
+            }
+
+            // Hide message after 3 seconds
+            setTimeout(() => {
+                resetStatus();
+            }, 3000);
+        }
+    </script>
+
+</body>
+</html>
+{% endblock %}

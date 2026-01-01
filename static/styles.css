@@ -471,3 +471,89 @@ input::-webkit-inner-spin-button {
 input[type=number] {
     -moz-appearance:textfield; /* Firefox */
 }
+
+/* =========================================
+   11. RECEPTION
+   ========================================= */
+
+/* The Main Card - Centered and Narrow */
+.kiosk-card {
+    max-width: 400px;
+    width: 100%;
+    margin: 0 auto;
+    background: white;
+    border-radius: var(--radius);
+    padding: 30px;
+    box-shadow: var(--shadow-lg);
+    border-top: 6px solid var(--primary-red);
+}
+
+/* The Large Digital Input Field */
+.kiosk-input {
+    width: 100%;
+    background-color: #f0f0f0;
+    border: 2px solid #ddd;
+    border-radius: var(--radius);
+    padding: 20px;
+    font-size: 3rem; /* Large text for visibility */
+    font-weight: 700;
+    text-align: center;
+    letter-spacing: 5px;
+    margin-bottom: 25px;
+    color: var(--text-dark);
+    outline: none;
+    transition: all 0.2s ease;
+    caret-color: transparent; 
+    cursor: none;
+}
+
+/* Input Focus State - White with Red Glow */
+.kiosk-input:focus {
+    background-color: white;
+    border-color: var(--primary-red);
+    box-shadow: 0 0 0 4px rgba(211, 47, 47, 0.1);
+}
+
+/* Hide Spinner Arrows in Input (Chrome/Safari/Edge) */
+.kiosk-input::-webkit-outer-spin-button,
+.kiosk-input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Hide Spinner Arrows in Input (Firefox) */
+.kiosk-input {
+    -moz-appearance: textfield;
+}
+
+/* Result Messages (Hidden by default) */
+.access-result {
+    margin-top: 20px;
+    padding: 20px;
+    border-radius: var(--radius);
+    text-align: center;
+    font-weight: 800;
+    text-transform: uppercase;
+    font-size: 1.2rem;
+    display: none; /* Controlled by JS */
+    animation: fadeIn 0.3s ease-out;
+}
+
+.result-accepted {
+    display: block;
+    background-color: #e8f5e9;
+    color: #2e7d32;
+    border: 2px solid #2e7d32;
+}
+
+.result-rejected {
+    display: block;
+    background-color: #ffebee;
+    color: #c62828;
+    border: 2px solid #c62828;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
