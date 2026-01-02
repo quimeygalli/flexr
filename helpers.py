@@ -1,4 +1,5 @@
 from flask import render_template
+import time
 import sqlite3
 
 def createDB():
@@ -48,8 +49,20 @@ def createDB():
                 "Friday TEXT NOT NULL DEFAULT 'Rest day', "
                 "Saturday TEXT NOT NULL DEFAULT 'Rest day', "
                 "Sunday TEXT NOT NULL DEFAULT 'Rest day', " \
-                "FOREIGN KEY(member_id) REFERENCES members (member_id));"
+                "FOREIGN KEY (member_id) REFERENCES members (member_id));"
                 )
+    
+    """ CREATE CHECK-IN AND CHECK-OUT TABLE"""  
+
+    cursor.execute("CREATE TABLE IF NOT EXISTS access_logs( " \
+                "access_id INTEGER PRIMARY KEY AUTOINCREMENT, " \
+                "member_id INTEGER, " \
+                "check_in_time INTEGER, " \
+                "check_out_time INTEGER, " \
+                "date INTEGER, " \
+                "FOREIGN KEY (member_id) REFERENCES members (member_id));"
+                )
+    
     connection.commit()
 
     cursor.close() # Connection isn't closed in this function for future usage in 'app.py'.
@@ -68,3 +81,12 @@ def dict_factory(cursor, row):
                                                         # Example: result["email_Address"] = "email@example.com"
 
     return result
+
+def unix_to_MD(timestamp):
+
+    """ Convert Unix timestamp to a readable date """
+    """ Jinja2 templates, credits to Przemek Rogala's blog"""
+    """ time.strftime formatinc, credits to geeksforgeeks.org """
+    if timestamp is None:
+        return ""
+    return time.strftime("%b, %d ", time.localtime(timestamp))

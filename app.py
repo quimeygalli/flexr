@@ -1,9 +1,10 @@
 from flask import Flask, session, render_template, request, redirect
 from flask_session import Session 
+import jinja2
 from cachelib.file import FileSystemCache
 import sqlite3
 from werkzeug.security import check_password_hash, generate_password_hash
-from helpers import createDB, dict_factory
+from helpers import createDB, dict_factory, unix_to_MD
 import time
 
 app = Flask(__name__)
@@ -26,6 +27,8 @@ SESSION_CACHELIB = FileSystemCache(
 app.config.from_object(__name__)
 
 Session(app)
+
+app.jinja_env.filters["convert_date"] = unix_to_MD # 'env.filters' is a dict
 
 """ DB creation """
 
