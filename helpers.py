@@ -86,7 +86,7 @@ def unix_to_MD(timestamp):
 
     """ Convert Unix timestamp to a readable date """
     """ Jinja2 templates, credits to Przemek Rogala's blog"""
-    """ time.strftime formatinc, credits to geeksforgeeks.org """
+    """ time.strftime formatinc, credits to geeksforgeeks.org"""
     if timestamp is None:
         return ""
     return time.strftime("%b, %d ", time.localtime(timestamp))

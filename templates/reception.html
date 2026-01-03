@@ -22,9 +22,9 @@
             <h2 style="text-align: center; margin-bottom: 10px;">Member Check-In</h2>
             <p style="text-align: center; margin-bottom: 30px; color: #777;">Please enter your ID number</p>
             
-            <form id="checkin-form" onsubmit="handleCheckIn(event)" autocomplete="off">
+            <form method="post" id="checkin-form" onsubmit="handleCheckIn(event)" autocomplete="off">
                 <input 
-                    name="member_id123456789"
+                    name="member_id"
                     type="number" 
                     id="member-id-input" 
                     class="kiosk-input" 
@@ -44,6 +44,10 @@
     </section>
 
     <script>
+        /*
+
+            Will deal with this later
+
         const inputField = document.getElementById('member-id-input');
         const statusDiv = document.getElementById('status-message');
 
@@ -98,7 +102,7 @@
             setTimeout(() => {
                 resetStatus();
             }, 3000);
-        }
+        }*/
     </script>
 
 </body>

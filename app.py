@@ -1,11 +1,13 @@
-from flask import Flask, session, render_template, request, redirect
-from flask_session import Session 
+import sqlite3
+import time
+
 import jinja2
 from cachelib.file import FileSystemCache
-import sqlite3
-from werkzeug.security import check_password_hash, generate_password_hash
+from flask import Flask, redirect, render_template, request, session
+from flask_session import Session
+
 from helpers import createDB, dict_factory, unix_to_MD
-import time
+from werkzeug.security import check_password_hash, generate_password_hash
 
 app = Flask(__name__)
 
@@ -64,7 +66,7 @@ def register():
         # Check if all the data was input.
 
         if not gym_name or not email_address or not password or not repeat_password:
-            return "PLEASE FILL ALL FIELDS"
+            return "PLEASE FILL ALL FIELDS" # Apology
         
         connection = sqlite3.connect("gyms.db")
         connection.row_factory = dict_factory
@@ -82,17 +84,17 @@ def register():
         # If there are rows with that email, notify the user.
 
         if row != None:
-            return "EMAIL IN USE"
+            return "EMAIL IN USE" # Apology
         
         # Check if passwords match.
 
         if password != repeat_password:
-            return "PASSWORDS MUST MATCH"
+            return "PASSWORDS MUST MATCH" # Apology
         
         # Check if password is the right length.
 
         if len(password) < 8:
-            return "PASSWORD MUST BE AT LEAST 8 CHARACTERS LONG"
+            return "PASSWORD MUST BE AT LEAST 8 CHARACTERS LONG" # Apology
 
         # Hashing and salting password.
 
@@ -132,7 +134,7 @@ def login():
         # Check if all fields have been filled.
 
         if not gym_email or not password:
-            return "PLEASE FILL ALL FIELDS"
+            return "PLEASE FILL ALL FIELDS" # Apology
         
         # Get gym data from DB.
 
@@ -159,7 +161,7 @@ def login():
         if row is None or not check_password_hash(
             row["password_hash"], password
         ):
-            return "INVALID EMAIL OR PASSWORD"
+            return "INVALID EMAIL OR PASSWORD" # Apology
         
         session["gym_id"] = row["gym_id"]
         return redirect("/homepage")
@@ -222,16 +224,27 @@ def new_member():
 
         # ID validation
 
-        if not isinstance(member_id, int):
-            return "PLEASE INPUT A VALID ID"
+        if isinstance(member_id, int):
+            return "PLEASE INPUT A VALID ID" # Apology
 
         if not member_id or not name or not last_name or not gym_id or not joined_date or not end_date:
-            return "Please fill all fields."
+            return "Please fill all fields." # Apology
 
         connection = sqlite3.connect("gyms.db")
         connection.row_factory = dict_factory
 
         cursor = connection.cursor()
+
+        query = ("SELECT member_id "
+                "FROM members "
+                "WHERE member_id = ?;"
+                )
+        
+        cursor.execute(query, (member_id,))
+        row = cursor.fetchone()
+
+        if row is not None:
+            return "Member is already registered" # Should find a better solution # Apology
 
         # Insert query
 
@@ -269,18 +282,20 @@ def reception():
 
         query = "SELECT * " \
                 "FROM members " \
-                "WHERE member_id = ?;"
+                "WHERE member_id = ?" \
+                "AND " \
+                "gym_id = ?;"
         
         connection = sqlite3.connect("gyms.db")
         connection.row_factory = dict_factory
 
         cursor = connection.cursor()
 
-        cursor.execute(query, (member_id,))
+        cursor.execute(query, (member_id, session["gym_id"]))
 
         row = cursor.fetchone()
-
-        if not row["member_id"]: # Should use JS here, not Python.
-            return "MEMBER NOT FOUND"
+         
+        if row is None: # Should use JS here, not Python.
+            return "MEMBER NOT FOUND" # Apology
 
     return render_template("reception.html")
