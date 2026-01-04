@@ -1,12 +1,11 @@
 import sqlite3
 import time
 
-import jinja2
 from cachelib.file import FileSystemCache
 from flask import Flask, redirect, render_template, request, session, jsonify
 from flask_session import Session
 
-from helpers import createDB, dict_factory, unix_to_MD
+from helpers import createDB, dict_factory, unix_to_MD, login_required
 from werkzeug.security import check_password_hash, generate_password_hash
 
 app = Flask(__name__)
@@ -170,6 +169,7 @@ def login():
     return render_template("login.html")
 
 @app.route("/logout")
+@login_required
 def logout():
 
     """ Logout the user """
@@ -179,14 +179,10 @@ def logout():
     return redirect("/")
 
 @app.route("/homepage")
+@login_required
 def homepage():
 
     """ Gym owner's menu """
-
-    # Check if a session is open.
-
-    if "gym_id" not in session:
-        return redirect("/login")
 
     connection = sqlite3.connect("gyms.db")
     connection.row_factory = dict_factory
@@ -206,6 +202,7 @@ def homepage():
     return render_template("homepage.html", members=members)
 
 @app.route("/new_member", methods=["GET", "POST"])
+@login_required
 def new_member():
 
     """ INSERT A NEW MEMBER TO DB """
@@ -273,12 +270,18 @@ def new_member():
 
 
 @app.route("/reception")
+@login_required
 def reception():
+
+    """ Render reception """
+
     return render_template("reception.html")
 
 
 @app.route("/api/check_member", methods=["POST"]) # Handle the JS. Helps prevent page from reloading. Calling it /api... is convention.
 def check_member_api():
+
+    """ Check if input id exists and use JS as an intermediary to modify HTML """
 
     # Get JSON data sent from JavaScript.
     id = request.get_json()

@@ -1,4 +1,5 @@
-from flask import render_template
+from flask import redirect, session
+from functools import wraps
 import time
 import sqlite3
 
@@ -90,3 +91,19 @@ def unix_to_MD(timestamp):
     if timestamp is None:
         return ""
     return time.strftime("%b, %d ", time.localtime(timestamp))
+
+def login_required(f):
+    """
+    Decorator for routes to require login
+    
+    Credit to:
+    https://flask.palletsprojects.com/en/latest/patterns/viewdecorators/
+    """
+
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if session.get("user_id") is None:
+            return redirect("/login")
+        return f(*args, **kwargs)
+
+    return decorated_function
