@@ -69,7 +69,6 @@
                     <span class="badge badge-success">{{ status }}</span>
                 </div>
                 <div style="display: flex; gap: 10px;">
-                    <button class="btn btn-outline" style="padding: 8px 20px; font-size: 0.9rem;">Freeze Membership</button>
                     <button class="btn btn-outline" style="padding: 8px 20px; font-size: 0.9rem;">Delete</button>
                 </div>
             </div>
@@ -98,61 +97,39 @@
             <div class="card">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 1px solid var(--border-color); padding-bottom: 15px;">
                     <h3 style="margin: 0;">Weekly Routine</h3>
-                    <a href="/edit_routine/12345678" class="btn btn-primary" style="padding: 8px 20px; font-size: 0.9rem;">
+                    <a href="/edit_routine/{{ member_id }}" class="btn btn-primary" style="padding: 8px 20px; font-size: 0.9rem;">
                         Edit Routine
                     </a>
                 </div>
 
                 <div style="overflow-x: auto;">
-                    <style>
-                        .routine-table th {
-                            vertical-align: top; /* Keeps day name at the top */
-                            width: 140px; /* Fixed width for consistency */
-                            background-color: #fafafa;
-                            padding-top: 15px; /* Matches td padding */
-                        }
-                        .routine-table td {
-                            white-space: pre-wrap; /* Preserves line breaks if you type them in the DB */
-                            line-height: 1.6; /* Better readability for long text */
-                            vertical-align: top;
-                        }
-                    </style>
-
                     <table class="routine-table">
-                        <tbody>
+                        <thead>
                             <tr>
                                 <th>Monday</th>
-                                <td>{{ monday }}</td>
-                            </tr>
-                            <tr>
                                 <th>Tuesday</th>
-                                <td>{{ tuesday }}</td>
-                            </tr>
-                            <tr>
                                 <th>Wednesday</th>
-                                <td>{{ wednesday }}</td>
-                            </tr>
-                            <tr>
                                 <th>Thursday</th>
-                                <td>{{ thursday }}</td>
-                            </tr>
-                            <tr>
                                 <th>Friday</th>
-                                <td>{{ friday }}</td>
-                            </tr>
-                            <tr>
                                 <th>Saturday</th>
-                                <td>{{ saturday }}</td>
-                            </tr>
-                            <tr>
                                 <th>Sunday</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>{{ monday }}</td>
+                                <td>{{ tuesday }}</td>
+                                <td>{{ wednesday }}</td>
+                                <td>{{ thursday }}</td>
+                                <td>{{ friday }}</td>
+                                <td>{{ saturday }}</td>
                                 <td>{{ sunday }}</td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
-            </div>
 
+            </div>
         </div>
     </section>
 

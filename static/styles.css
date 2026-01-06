@@ -584,3 +584,91 @@ input[type=number] {
     color: #721c24;
     border: 1px solid #f5c6cb;
 }
+
+/* =========================================
+   12. MEMBER_DETAISL
+   ========================================= */
+
+.routine-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 1000px; /* Forces table to be wide enough to read */
+}
+
+/* Header Row (The Days) */
+.routine-table th {
+    background-color: var(--primary-red);
+    color: white;
+    padding: 15px 10px;
+    text-align: left;
+    font-size: 0.9rem;
+    font-weight: 700;
+    width: 14.28%; /* Equal width for 7 days */
+    border: 1px solid #b71c1c; /* Slightly darker red border */
+}
+
+/* Data Row (The Routine) */
+.routine-table td {
+    background-color: white;
+    padding: 15px 10px;
+    border: 1px solid var(--border-color);
+    vertical-align: top; /* Important: Align text to top if lengths differ */
+    font-size: 0.9rem;
+    line-height: 1.5;
+    color: var(--text-dark);
+    white-space: pre-wrap; /* Preserves line breaks */
+}
+
+/* =========================================
+   ROUTINE TABLE STYLES
+   ========================================= */
+
+.routine-table {
+    width: 100%;
+    border-collapse: collapse; /* Essential for the borders to connect */
+    min-width: 1000px;
+}
+
+/* --- HEADER STYLES (The Red Box) --- */
+.routine-table th {
+    background-color: #f8f9fa;
+    color: var(--text-dark);
+    font-weight: 800;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    letter-spacing: 1px;
+    padding: 18px 15px;
+
+    /* 1. TOP and BOTTOM Red Borders */
+    border-top: 3px solid var(--primary-red);
+    border-bottom: 3px solid var(--primary-red); /* This creates the red line under the days */
+
+    /* Internal vertical separators (Grey) */
+    border-right: 1px solid #e0e0e0;
+}
+
+/* 2. LEFT Red Border (Only on the first day) */
+.routine-table th:first-child {
+    border-left: 3px solid var(--primary-red);
+}
+
+/* 3. RIGHT Red Border (Only on the last day) */
+.routine-table th:last-child {
+    border-right: 3px solid var(--primary-red);
+}
+
+/* --- DATA ROWS --- */
+.routine-table td {
+    background-color: white;
+    padding: 20px 15px;
+    vertical-align: top;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: #444;
+    white-space: pre-wrap;
+    
+    /* Standard grey borders for the body */
+    border-right: 1px solid #f0f0f0;
+    border-bottom: 1px solid #f0f0f0;
+    border-left: 1px solid #f0f0f0;
+}

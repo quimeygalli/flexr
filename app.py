@@ -316,7 +316,7 @@ def new_member():
         if row is not None:
             return "Member is already registered" # Should find a better solution # Apology
 
-        # Insert query
+        # Insert member into members table
 
         query = ("INSERT INTO "
                 "members ("
@@ -335,6 +335,12 @@ def new_member():
                        (member_id, name + " " + last_name, gym_id, joined_unix_timestamp, end_unix_timestamp) # Awful design honestly
                        )
         
+        # Insert member into routines table
+
+        query = "INSERT INTO routines (member_id) " \
+                "VALUES (?) ;"
+
+        cursor.execute(query, (member_id,))        
         connection.commit()
 
         cursor.close()
