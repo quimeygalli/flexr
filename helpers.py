@@ -152,11 +152,13 @@ def update_member_status(gym_id):
     connection.close()
 
 def days_remaining(member):
+
+    """ Calculate how many days of subscription a member has left """
+    """ Returns an int"""
+
     today = datetime.date.today()
     end_date = datetime.date.fromtimestamp((member["end_date"]))
 
-    print(f"End date type: {type(end_date)} \nToday type: {type(today)}")
-    print(f"End date: {end_date} \nToday: {today}")
     days_remaining = (end_date - today).days
     
     if days_remaining < 0:

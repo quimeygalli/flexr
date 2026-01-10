@@ -213,7 +213,7 @@ def homepage():
 
     return render_template("homepage.html", members=members)
 
-@app.route("/members/<int:member_id>")
+@app.route("/members/<int:member_id>", methods=["GET", "POST"])
 @login_required
 def member_detail(member_id):
 
@@ -260,6 +260,32 @@ def member_detail(member_id):
     friday = routine_row["Friday"]
     saturday = routine_row["Saturday"]
     sunday = routine_row["Sunday"]
+
+    # Delete button
+
+    if request.method == "POST":
+
+        print("MEMBER deletion")
+        if request.form.get("delete_member"):
+            connection = sqlite3.connect("gyms.db")
+            cursor = connection.cursor()
+
+            query = "DELETE FROM members " \
+                    "WHERE member_id = ? AND gym_id = ?;"
+            cursor.execute(query, (member_id, gym_id))
+            connection.commit()
+
+            query = "DELETE FROM routines " \
+                    "WHERE member_id = ?;"
+            cursor.execute(query, (member_id,))
+            connection.commit()
+
+            connection.close()
+
+            print("MEMBER DELETED")
+            
+            return redirect("/homepage")
+            
 
     return render_template("member_details.html", 
                            name=name,
