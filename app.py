@@ -265,7 +265,6 @@ def member_detail(member_id):
 
     if request.method == "POST":
 
-        print("MEMBER deletion")
         if request.form.get("delete_member"):
             connection = sqlite3.connect("gyms.db")
             cursor = connection.cursor()
@@ -281,8 +280,6 @@ def member_detail(member_id):
             connection.commit()
 
             connection.close()
-
-            print("MEMBER DELETED")
             
             return redirect("/homepage")
             
@@ -394,7 +391,7 @@ def reception():
 
     """ Render reception """
 
-    update_member_status(session["gym_id"])
+    update_member_status(session["gym_id"]) # Update members status. Not the best design.
 
     return render_template("reception.html")
 
@@ -419,13 +416,30 @@ def check_member_api():
     cursor.execute(query, (member_id, session["gym_id"]))
     row = cursor.fetchone()
 
-    connection.close()
-
     if row is None: # If no id has been found, return false.
         # Return a JSON
+        connection.close()
         return jsonify({"exists": False})
+
+    # Log the last visit of member
+
+    last_visit = int(datetime.now().timestamp()) 
+ 
+    query = "UPDATE members " \
+            "SET last_visit = ? " \
+            "WHERE member_id = ?;"
+
+    cursor.execute(query, (last_visit, member_id))
+    connection.commit()
+
+    query = "INSERT INTO " \
+            "access_logs (member_id, check_in_time) " \
+            "VALUES (?, ?);"
     
-    last_visit = datetime.now()
+    cursor.execute(query, (member_id, last_visit)) # Could remove 'last_visit' from members and perform a JOIN here.
+    connection.commit()
+
+    connection.close()
     
     return jsonify({
         "exists": True, 

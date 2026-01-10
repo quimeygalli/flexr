@@ -92,9 +92,13 @@
                     </div>
 
                     <div>
+                        <span class="info-label">Last visit:</span>
+                        <div class="info-value">{{ last_visit | convert_date }}</div>
+                    </div>
+
+                    <div>
                         <span class="info-label">Days remaining:</span>
                         <div class="info-value" style="display: flex; align-items: center; gap: 10px;">
-                            {{ last_visit | convert_date }}
                             <span style="font-size: 0.85rem; font-weight: 400; color: var(--primary-red); background: #ffebee; padding: 2px 8px; border-radius: 4px;">
                                 {{ days_left }}
                             </span>

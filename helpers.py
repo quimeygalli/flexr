@@ -59,10 +59,7 @@ def createDB():
     cursor.execute("CREATE TABLE IF NOT EXISTS access_logs( " \
                 "access_id INTEGER PRIMARY KEY AUTOINCREMENT, " \
                 "member_id INTEGER, " \
-                "check_in_time INTEGER, " \
-                "check_out_time INTEGER, " \
-                "date INTEGER, " \
-                "FOREIGN KEY (member_id) REFERENCES members (member_id));"
+                "check_in_time INTEGER);" \
                 )
     
     connection.commit()
