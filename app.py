@@ -420,6 +420,11 @@ def check_member_api():
         # Return a JSON
         connection.close()
         return jsonify({"exists": False})
+    
+    elif row["status"] == "Inactive":
+        connection.close()
+        return jsonify({"exists": True,
+                        "status": row["status"]})
 
     # Log the last visit of member
 
@@ -434,7 +439,7 @@ def check_member_api():
 
     query = "INSERT INTO " \
             "access_logs (member_id, check_in_time) " \
-            "VALUES (?, ?);"
+            "VALUES (?, ?);" # TODO; fix the placement
     
     cursor.execute(query, (member_id, last_visit)) # Could remove 'last_visit' from members and perform a JOIN here.
     connection.commit()
@@ -443,5 +448,6 @@ def check_member_api():
     
     return jsonify({
         "exists": True, 
+        "status": row["status"],
         "name": row["name"] # Send the name to the JS.
     })

@@ -21,10 +21,13 @@ async function handleCheckIn(event) {
 
         const data = await response.json();
 
-        if (data.exists) {
+        if (data.exists && data.status === 'Active') {
             statusDiv.textContent = `Welcome, ${data.name}!`; // Uses the name from DB
             statusDiv.classList.add('success');
             inputField.value = ''; 
+        } else if (data.status === 'Inactive') {
+            statusDiv.textContent = 'Membership expired';
+            statusDiv.classList.add('error');
         } else {
             statusDiv.textContent = 'Member not found.';
             statusDiv.classList.add('error');
