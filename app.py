@@ -3,13 +3,11 @@ import sqlite3
 from cachelib.file import FileSystemCache
 from datetime import datetime, timezone
 from dateutil.relativedelta import relativedelta
-from flask import Flask, redirect, render_template, request, session, jsonify
+from flask import Flask, redirect, render_template, request, session, jsonify, url_for
 from flask_session import Session
 
 from helpers import createDB, dict_factory, unix_to_date, login_required, update_member_status, days_remaining
 from werkzeug.security import check_password_hash, generate_password_hash
-
-# TODO; Create a routine for each new member when the are registered to a gym. 
 
 app = Flask(__name__)
 
@@ -302,6 +300,65 @@ def member_detail(member_id):
                            saturday=saturday,
                            sunday=sunday)
 
+@app.route("/edit_routine/<int:member_id>", methods=["GET", "POST"])
+@login_required
+def edit_routine(member_id):
+
+    """ Allows trainers to add and edit a member's routine """
+
+    connection = sqlite3.connect("gyms.db")
+    connection.row_factory = dict_factory
+
+    cursor = connection.cursor()
+
+    query = "SELECT * " \
+            "FROM routines " \
+            "WHERE member_id = ?;"
+    
+    cursor.execute(query, (member_id,))
+
+    current_routine = cursor.fetchone()
+
+    if request.method == "POST":
+        print("POSTED")
+        monday = request.form.get("monday")
+        tuesday = request.form.get("tuesday")
+        wednesday = request.form.get("wednesday")
+        thursday = request.form.get("thursday")
+        friday = request.form.get("friday")
+        saturday = request.form.get("saturday")
+        sunday = request.form.get("sunday")
+        print(monday)
+
+        query = "UPDATE routines " \
+                "SET " \
+                "Monday = ?, " \
+                "Tuesday = ?, " \
+                "Wednesday = ?, " \
+                "Thursday = ?, " \
+                "Friday = ?, " \
+                "Saturday = ?, " \
+                "Sunday = ? " \
+                "WHERE member_id = ?;"
+        
+        cursor.execute(query, (monday,
+                                tuesday,
+                                wednesday,
+                                thursday,
+                                friday ,
+                                saturday,
+                                sunday,
+                                member_id))
+        
+        connection.commit()
+        return redirect(url_for("member_detail", member_id=member_id))
+
+    connection.close
+    
+    return render_template("edit_routine.html",
+                           routine=current_routine,
+                           member_id=member_id)
+
 @app.route("/new_member", methods=["GET", "POST"])
 @login_required
 def new_member():
@@ -439,9 +496,9 @@ def check_member_api():
 
     query = "INSERT INTO " \
             "access_logs (member_id, check_in_time) " \
-            "VALUES (?, ?);" # TODO; fix the placement
+            "VALUES (?, ?);"
     
-    cursor.execute(query, (member_id, last_visit)) # Could remove 'last_visit' from members and perform a JOIN here.
+    cursor.execute(query, (member_id, last_visit))
     connection.commit()
 
     connection.close()

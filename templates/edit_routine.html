@@ -1,0 +1,99 @@
+{% extends "layout.html" %}
+
+{% block title %}Edit Routine{% endblock %}
+
+{% block main %}
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body class="bg-light">
+
+    <header>
+        <div class="container">
+            <div class="nav-container">
+                <div class="logo">
+                    <img src="/static/FlexR_Logo.png" style="width:40%; height:40%">
+                </div>
+                <div class="nav-links">
+                     <a href="/homepage" style="font-weight: 700; color: var(--primary-red);">Back to Dashboard</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <section style="padding: 50px 0;">
+        <div class="container">
+
+            <div style="margin-bottom: 20px;">
+                <a href="/members/{{ member_id }}" style="color: var(--text-light); font-size: 0.9rem; display: flex; align-items: center; gap: 5px;">
+                    &larr; Back to Member Details
+                </a>
+            </div>
+
+            <form action="/edit_routine/{{ member_id }}" method="post">
+                <input type="hidden" name="member_id" value="{{ member_id }}">
+
+                <div class="page-header">
+                    <div>
+                        <h2>Edit Routine</h2>
+                    </div>
+                    <div style="display: flex; gap: 10px;">
+                        <a href="/members/{{ member_id }}" class="btn btn-outline">Cancel</a>
+                        <button type="submit" class="btn btn-primary">Save Changes</button>
+                    </div>
+                </div>
+
+                <div class="table-rounded-container">
+                    <table class="routine-table">
+                        <thead>
+                            <tr>
+                                <th>Monday</th>
+                                <th>Tuesday</th>
+                                <th>Wednesday</th>
+                                <th>Thursday</th>
+                                <th>Friday</th>
+                                <th>Saturday</th>
+                                <th>Sunday</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <textarea name="monday" class="routine-input" placeholder="Rest or Workout...">{{ routine["Monday"] }}</textarea>
+                                </td>
+                                <td>
+                                    <textarea name="tuesday" class="routine-input" placeholder="Rest or Workout...">{{ routine["Tuesday"] }}</textarea>
+                                </td>
+                                <td>
+                                    <textarea name="wednesday" class="routine-input" placeholder="Rest or Workout...">{{ routine["Wednesday"] }}</textarea>
+                                </td>
+                                <td>
+                                    <textarea name="thursday" class="routine-input" placeholder="Rest or Workout...">{{ routine["Thursday"] }}</textarea>
+                                </td>
+                                <td>
+                                    <textarea name="friday" class="routine-input" placeholder="Rest or Workout...">{{ routine["Friday"] }}</textarea>
+                                </td>
+                                <td>
+                                    <textarea name="saturday" class="routine-input" placeholder="Rest or Workout...">{{ routine["Saturday"] }}</textarea>
+                                </td>
+                                <td>
+                                    <textarea name="sunday" class="routine-input" placeholder="Rest or Workout...">{{ routine["Sunday"] }}</textarea>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <p style="margin-top: 20px; color: #777; font-size: 0.9rem; text-align: center;">
+                    Tip: Press "Save Changes" at the top right when you are finished.
+                </p>
+
+            </form>
+
+        </div>
+    </section>
+
+</body>
+{% endblock %}

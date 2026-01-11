@@ -622,53 +622,100 @@ input[type=number] {
 /* =========================================
    ROUTINE TABLE STYLES
    ========================================= */
+   
+/* The Wrapper (Handles horizontal scroll) */
+.table-rounded-container {
+    overflow-x: auto;
+    padding-bottom: 20px; /* Space for the shadow */
+    padding-top: 5px;     /* Space for hover lift */
+}
 
 .routine-table {
     width: 100%;
-    border-collapse: collapse; /* Essential for the borders to connect */
-    min-width: 1000px;
+    min-width: 1100px; /* Ensures cards are wide enough */
+    
+    /* Crucial: Separates the cells so we can style them individually */
+    border-collapse: separate; 
+    border-spacing: 12px 0; /* 12px gap between columns, 0 vertical */
 }
 
-/* --- HEADER STYLES (The Red Box) --- */
+/* --- THE HEADERS (The "Tabs") --- */
 .routine-table th {
-    background-color: #f8f9fa;
-    color: var(--text-dark);
-    font-weight: 800;
+    background-color: var(--primary-red);
+    color: white;
+    font-weight: 700;
     text-transform: uppercase;
     font-size: 0.8rem;
     letter-spacing: 1px;
-    padding: 18px 15px;
-
-    /* 1. TOP and BOTTOM Red Borders */
-    border-top: 3px solid var(--primary-red);
-    border-bottom: 3px solid var(--primary-red); /* This creates the red line under the days */
-
-    /* Internal vertical separators (Grey) */
-    border-right: 1px solid #e0e0e0;
+    padding: 15px 10px;
+    text-align: center;
+    
+    /* Rounded Tops Only */
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    
+    /* No borders, just a clean block */
+    border: none;
+    box-shadow: 0 4px 6px rgba(211, 47, 47, 0.2);
 }
 
-/* 2. LEFT Red Border (Only on the first day) */
-.routine-table th:first-child {
-    border-left: 3px solid var(--primary-red);
-}
-
-/* 3. RIGHT Red Border (Only on the last day) */
-.routine-table th:last-child {
-    border-right: 3px solid var(--primary-red);
-}
-
-/* --- DATA ROWS --- */
+/* --- THE BODY (The "Content Cards") --- */
 .routine-table td {
     background-color: white;
     padding: 20px 15px;
     vertical-align: top;
-    font-size: 0.95rem;
+    font-size: 0.9rem;
     line-height: 1.6;
-    color: #444;
+    color: var(--text-dark);
     white-space: pre-wrap;
     
-    /* Standard grey borders for the body */
-    border-right: 1px solid #f0f0f0;
-    border-bottom: 1px solid #f0f0f0;
-    border-left: 1px solid #f0f0f0;
+    /* Rounded Bottoms Only */
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    
+    /* Modern Card Shadow instead of borders */
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    border: 1px solid #f0f0f0; /* Very subtle border */
+    border-top: none; /* Connects seamlessly to header */
+    
+    /* Height consistency */
+    height: 100%;
+}
+
+/* Optional: Hover Effect on the columns */
+.routine-table td:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+    transition: all 0.2s ease;
+}
+
+/* =========================================
+   ROUTINE EDITOR STYLES
+   ========================================= */
+
+/* The Textarea acts as the card body */
+.routine-input {
+    width: 100%;
+    height: 300px; /* Tall enough for a full workout */
+    border: none;
+    resize: none; /* Disables dragging corner */
+    background: transparent;
+    font-family: inherit;
+    font-size: 0.9rem;
+    line-height: 1.6;
+    color: var(--text-dark);
+    outline: none;
+    padding: 0; /* Padding is handled by the td */
+}
+
+/* Subtle focus effect */
+.routine-input:focus {
+    background-color: #fffafa; /* Very faint red tint on focus */
+}
+
+/* Hover effect on the whole card wrapper (td) */
+.routine-table td:focus-within {
+    box-shadow: 0 8px 16px rgba(211, 47, 47, 0.15); /* Red glow when typing */
+    transform: translateY(-3px);
+    border-color: rgba(211, 47, 47, 0.3);
 }
