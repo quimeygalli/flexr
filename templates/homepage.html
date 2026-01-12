@@ -17,7 +17,7 @@
                 </div>
                 
                 <div class="nav-links">
-                    <a style="font-weight: 700; color: var(--primary-red);">Members</a>
+                    <a href="#" style="font-weight: 700; color: var(--primary-red);">Members</a>
                     <div style="width: 1px; height: 20px; background: #ddd; margin: 0 10px;"></div> <a href="/logout" style="font-size: 0.9rem;">Log Out</a>
                 </div>
             </div>
@@ -45,12 +45,22 @@
             </div>
 
             <div style="margin-bottom: 20px;">
-                <input type="text" class="form-control" placeholder="Search members by name..." style="max-width: 400px;">
+                <form action="/homepage" method="post">
+                    <input 
+                        name="member_search" 
+                        type="text" 
+                        class="form-control" 
+                        placeholder="Search members by name..." 
+                        style="max-width: 400px;" 
+                        value="{{ search_query or '' }}"
+                    >
+                </form>
             </div>
+
             <div class="member-list">
 
                 {% for member in members %}
-                    <a href="/members/{{ member['member_id' ]}}" class="member-item">
+                    <a href="/members/{{ member['member_id'] }}" class="member-item">
                         <div class="member-info">
                             <span class="member-name">{{ member["name"] }}</span>
                             <span class="member-detail">Last visit: {{ member["last_visit"] | convert_date }}</span>
@@ -61,8 +71,7 @@
                                     badge-success
                                 {% else %}
                                     badge-danger
-                            {% endif %}"
-                            ">
+                                {% endif %}">
                                 {{ member["status"] }}
                             </span>
                         </div>

@@ -181,7 +181,7 @@ def logout():
 
     return redirect("/")
 
-@app.route("/homepage")
+@app.route("/homepage", methods=["GET", "POST"])
 @login_required
 def homepage():
 
@@ -194,11 +194,27 @@ def homepage():
 
     cursor = connection.cursor()
 
-    query = "SELECT * " \
-            "FROM members " \
-            "WHERE gym_id = ?;"
+    search_query = ""
 
-    cursor.execute(query, (session["gym_id"],))
+    if request.method == "POST":
+        
+        search_query = request.form.get("member_search")
+
+        query = "SELECT * " \
+                "FROM members " \
+                "WHERE gym_id = ? AND name LIKE ?;"
+        
+        cursor.execute(query, (session["gym_id"], "%" + search_query + "%"))
+        members = cursor.fetchall()
+        
+        return render_template("homepage.html", members=members)
+
+    else:
+        query = "SELECT * " \
+                "FROM members " \
+                "WHERE gym_id = ?;"
+
+        cursor.execute(query, (session["gym_id"],))
 
     members = cursor.fetchall() 
 
