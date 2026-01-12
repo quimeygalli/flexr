@@ -3,7 +3,7 @@ import sqlite3
 from cachelib.file import FileSystemCache
 from datetime import datetime, timezone
 from dateutil.relativedelta import relativedelta
-from flask import Flask, redirect, render_template, request, session, jsonify, url_for
+from flask import Flask, redirect, render_template, request, session, jsonify, url_for, flash
 from flask_session import Session
 
 from helpers import createDB, dict_factory, unix_to_date, login_required, update_member_status, days_remaining
@@ -134,7 +134,8 @@ def login():
         # Check if all fields have been filled.
 
         if not gym_email or not password:
-            return "PLEASE FILL ALL FIELDS" # Apology
+            flash("Please fill all fields", "error")
+            return render_template("login.html")
         
         # Get gym data from DB.
 
@@ -161,7 +162,8 @@ def login():
         if row is None or not check_password_hash(
             row["password_hash"], password
         ):
-            return "INVALID EMAIL OR PASSWORD" # Apology
+            flash("Invalid email or password", "error")
+            return render_template("login.html")
         
         session["gym_id"] = row["gym_id"]
         return redirect("/homepage")

@@ -61,14 +61,15 @@
                     <!-- REPEAT PASSWORD -->
 
                     <div class="form-group">
-                        <label for="password" class="form-label">Repeat Password</label>
-                        <input required name="repeat_password" autocomplete="off" type="password" id="password" class="form-control" placeholder="Passwords must match">
+                        <label for="confirm_password" class="form-label">Repeat Password</label>
+                        <input required name="repeat_password" autocomplete="off" type="password" id="confirm_password" class="form-control" placeholder="Passwords must match">
                     </div>
 
                     <!-- SUBMIT BUTTON -->
 
                     <button type="submit" class="btn btn-primary btn-block" style="margin-top: 20px;">
                         Create Account
+                    </button>
                 </form>
             </div>
 
@@ -76,6 +77,12 @@
     </section>
 
 </body>
+<!-- Source - https://stackoverflow.com/a/30011819 -->
+<!-- Posted by jonprasetyo, modified by community. See post 'Timeline' for change history -->
+<!-- Retrieved 2026-01-11, License - CC BY-SA 4.0 -->
+
+<script src="{{url_for('static', filename='check_password.js')}}"></script>
+
 </html>
 
 {% endblock %}
